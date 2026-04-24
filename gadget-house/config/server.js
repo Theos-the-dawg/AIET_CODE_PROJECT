@@ -1,12 +1,13 @@
-require('dotenv').config();
+//require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
-const pool = require('./config/db');
+const pool = require('./db');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000//process.env.PORT || 3000;
 
+app.set('view engine', 'ejs');
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +28,7 @@ app.use(session({
 // ==================== AUTH ROUTES ====================
 
 // REGISTER
+
 app.post('/api/register', async (req, res) => {
     const { email, password } = req.body;
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gadget House</title>
+    <style>
+        body { font-family: Arial; margin: 0; padding: 20px; }
+        nav { background: #333; padding: 15px; color: white; display: flex; justify-content: space-between; }
+        nav a { color: white; text-decoration: none; margin: 0 10px; }
+        #userInfo { color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div>
+            <strong>Gadget House</strong>
+            <a href="#">Computers</a>
+            <a href="#">Mobile Phones</a>
+            <a href="#">Gadgets</a>
+        </div>
+        <div id="authLinks">
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </div>
+    </nav>
+
+    <h1>Welcome to Gadget House</h1>
+    <div id="userInfo"></div>
+
+    <script>
+        fetch('/api/me')
+            .then(res => res.json())
+            .then(data => {
+                const authDiv = document.getElementById('authLinks');
+                const userDiv = document.getElementById('userInfo');
+                
+                if (data.loggedIn) {
+                    authDiv.innerHTML = `
+                        <span>Hello, ${data.user.email}</span>
+                        <a href="#" onclick="logout()">Logout</a>
+                    `;
+                    userDiv.innerHTML = `<p>You are logged in! User ID: ${data.user.id}</p>`;
+                }
+            });
+
+        function logout() {
+            fetch('/api/logout', { method: 'POST' })
+                .then(() => window.location.reload());
+        }
+    </script>
+</body>
+</html>

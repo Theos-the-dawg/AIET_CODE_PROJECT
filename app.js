@@ -1,17 +1,17 @@
-const createError = require('http-errors');// handles bad or broken http requets
-const express = require('express'); // dev dependecy that tells the system that we need express
-const path = require('path');// for our file paths 
-const cookieParser = require('cookie-parser');// for handling our http cookie
-const logger = require('morgan');// for logging accessing details about endpoints 
-const port = 3000;
+const createError = require('http-errors');//handling http request that break namely (errors)
+const express = require('express'); // our express app dependencies(needed to tell the system thjat we are using expressjs)
+const path = require('path'); // This is used for setting files paths
+const cookieParser = require('cookie-parser');// takes in cookie data
+const logger = require('morgan');//used for logging(logs for showing server-side ) 
+const port = 3000;//port this is optional to place in the app.,js file if you have a www. config
 
-
-//This is where we place each logic for the feature or function of the appp 
-// we break down by each feature which has its own 
-const indexRouter = require('./routes/index');// 
+//routes for project files
+const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-
-const app = express();
+const productsRouter = require('./routes/products');
+           
+ 
+const app = express();// start our instancce of express
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,12 +27,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use((req, res, next)=> {
+app.use(function(req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use((err, req, res, next)=> {
+app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -43,7 +43,7 @@ app.use((err, req, res, next)=> {
 });
 
 app.listen(port, (req,res) =>{
-  console.log(`running on localhost:${port}`)
-})
 
+  console.log(`url for the app  is defaulted to this 127.0.0.1:${port}/`)
+})
 module.exports = app;

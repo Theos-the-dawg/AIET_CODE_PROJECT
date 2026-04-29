@@ -28,6 +28,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+
+// Home Page 
+app.get('/home', (req, res) => {
+  res.send('<h1>Home Page</h1><p>Welcome to Gadget-House.Home of all your best electronics!.</p>');
+});
+
+// About Us Page
+app.get('/about', (req, res) => {
+  res.send('<h1>About Us</h1><p>This is the About section of our app.</p>');
+});
+
+//  Contact Us Page
+app.get('/contact', (req, res) => {
+  res.send('<h1>Contact Us</h1><p>Reach out to us here.</p>');
+});
+
+// Products Page
+app.get('/products', (req, res) => {
+  res.send('<h1>Products</h1><p>Check out our list of products.</p>');
+});
+
 // catch 404 and forward to error handler
 app.use((req, res, next)=> {
   next(createError(404));

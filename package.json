@@ -1,7 +1,32 @@
 {
+  "name": "aiet_code_project",
+  "version": "1.0.0",
+  "description": "- **Project Name:** Gadget house\r - **Project Description:** A express.js E-Commerce application that will allow users to create accounts shop for products and purchase the ,\r - **Start Date:** 14 APRIL 2026\r - **End Date (Estimated):** 30 APRIL 2026\r - **Project Manager:** Motheo Marutla.\r - **Team Members:** Master and Gerald\r - **Stakeholders:**",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Theos-the-dawg/AIET_CODE_PROJECT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Theos-the-dawg/AIET_CODE_PROJECT/issues"
+  },
+  "homepage": "https://github.com/Theos-the-dawg/AIET_CODE_PROJECT#readme",
   "dependencies": {
-    "axios": "^1.15.0",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^5.0.2",
     "express": "^5.2.1",
-    "mongoose": "^9.4.1"
+    "http-error": "^0.0.6",
+    "morgan": "^1.10.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }

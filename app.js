@@ -11,12 +11,14 @@ const port = 3000;
 const indexRouter = require('./routes/index');// 
 const usersRouter = require('./routes/users');
 
+
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+//middleware -- the middleman between the server the client that is going to configure or parse data
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,6 +32,8 @@ app.use('/users', usersRouter);
 app.use((req, res, next)=> {
   next(createError(404));
 });
+
+
 
 // error handler
 app.use((err, req, res, next)=> {

@@ -29,13 +29,19 @@ app.use('/users', usersRouter);
 
 
 // Home Page 
-app.get('/home', (req, res) => {
-  res.send('<h1>Home Page</h1><p>Welcome to Gadget-House.Home of all your best electronics!.</p>');
+app.get('/home', (req,res) => {
+  let name = 'Gerald';
+  res.render('index',{data:name},
+    console.log(name)
+  )
+  //res.render('index',{data:name});
+
 });
 
 // About Us Page
 app.get('/about', (req, res) => {
-  res.send('<h1>About Us</h1><p>This is the About section of our app.</p>');
+  //res.send('<h1>About Us</h1><p>This is the About section of our app.</p>');
+res.render('')
 });
 
 //  Contact Us Page

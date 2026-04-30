@@ -16,12 +16,17 @@ router.get('/', function(req, res, next) {
   res.render('index', { users: user_detail });
 
 });
+// post a name to the endpoint from a user
+router.post('/registration',(req, res) =>{
+  let users = req.body;
+  console.log(users)
+  res.send(json(users={
+    name:"gerald"
+  })).sendStatus(200);
+})
 
-// /*GET  about page*/
-router.get('about/',(req,res) =>{
 
-  res.render('about')
-});
+
 
 
 module.exports = router;

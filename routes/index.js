@@ -5,13 +5,11 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   users =
-   {
-    Name:"motheo",Surname:"marutla",
-      Name:"Gerald",Surname:"Kapurura",
-    Name:"master",Surname:"masso"};
+   {Name:"motheo", Surname:"marutla"};
 
-  user_details = users.Name + users.Surname
-  res.render('index', { users: user_details });
+
+  let user_detail = users.Name + users.Surname
+  res.render('index', { users: user_detail });
 
 });
 

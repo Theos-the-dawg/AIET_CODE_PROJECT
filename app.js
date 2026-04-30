@@ -8,7 +8,7 @@ const port = 3000;//port this is optional to place in the app.,js file if you ha
 //routes for project files
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const productsRouter = require('./routes/products');
+//const productsRouter = require('./routes/products');
            
  
 const app = express();// start our instancce of express

@@ -27,18 +27,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+// Importing Routes
+const indexRoutes = require('./routes/index.js');
+const userRoutes = require('./routes/users.js');
+const productRoutes = require('./routes/products.js');
 
-
-// Products Page
-app.get('/products', (req, res) => {
-  res.send('<h1>Products</h1><p>Check out our list of products.</p>');
-});
+// Using Routes
+app.use('/', indexRoutes);
+app.use('/users', userRoutes);
+app.use('/products', productRoutes);
 
 // catch 404 and forward to error handler
-ap.usep(function(req, res, next) {
+app.use(function(req, res, next) {
   next(createError(404));
 });
-
 
 
 // error handler

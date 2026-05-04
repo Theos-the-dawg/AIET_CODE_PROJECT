@@ -1,11 +1,20 @@
-GET http://127.0.0.1:3000/about
-###
-GET http://127.0.0.1:3000/users/
-###
+### Test Home Page
+GET http://localhost:3000/
 
-POST http://127.0.0.1:3000//registration
+### Test About Page
+GET http://localhost:3000/about
+
+### Get All Users
+GET http://localhost:3000/users/
+
+### Login User
+POST http://localhost:3000/users/login
 Content-Type: application/json
-{
-    Name:'motheo';
-}
-POST
+
+{}
+
+### Get All Products
+GET http://localhost:3000/products/all_products
+
+### Get Specific Product (ID: 11)
+GET http://localhost:3000/products/get-specific_product/11

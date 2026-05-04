@@ -1,6 +1,6 @@
-var express = require('express');
+const express = require('express');
 //const { resource } = require('../app');
-var router = express.Router();
+const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -15,5 +15,16 @@ for (const [Name, Surname] of Object.entries(my_users)) {
 
 res.render('people',Name+Surname)
 }});
+
+
+router.get('/', (req, res) => res.json(users));
+
+router.post('/login', (req, res) => {
+    res.send('User logged in successfully');
+});
+
+router.post('/logout', (req, res) => {
+    res.send('User logged out');
+});
 
 module.exports = router;

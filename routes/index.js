@@ -22,10 +22,10 @@ router.get('/contact', (req, res) => {
 
 //IndexRoutes
 //Home route
-app.get('/home', (req, res) => {
-  res.send('Hello World!')
-})
-
+router.get('/',(req,res) => res.send('Welcome to Gagdet-House.'));
+router.get('/about',(req,res) => res.send('This is the our page.'));
+router.get('/contact',(req,res) => res.send('This is our contact page.'));
+router.get('/services',(req,res) => res.send('This is our services page.'));
 
 
 

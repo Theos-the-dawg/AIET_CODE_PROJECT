@@ -1,28 +1,29 @@
-var express = require('express');
-const { render } = require('../app');
-var router = express.Router();
+const express = require('express');
+//const { render } = require('../router');
+const router = express.Router();
 
 router.use(express.json())
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  users =
-   {
-    Name:"motheo",Surname:"marutla"}
-    //   Name:"Gerald",Surname:"Kapurura",
-    // Name:"master",Surname:"masso"};
-
-
-  let user_detail = users.Name + users.Surname
-  res.render('index', { users: user_detail });
-
+// Home Page 
+ router.get('/home', (req,res) => {
+  console.log('Hi');
+  res.send('This is the home page')
+ });
+  
+// About Us Page
+router.get('/about', (req, res) => {
+  res.send('<h1>About Us</h1><p>This is the About section of our router.</p>');
 });
-// post a name to the endpoint from a user
-router.post('/registration',(req, res) =>{
-  let users = req.body;
-  console.log(users)
-  res.send(json(users={
-    name:"gerald"
-  })).sendStatus(200);
+
+//  Contact Us Page
+router.get('/contact', (req, res) => {
+  res.send('<h1>Contact Us</h1><p>Reach out to us here.</p>');
+});
+
+//IndexRoutes
+//Home route
+app.get('/home', (req, res) => {
+  res.send('Hello World!')
 })
 
 

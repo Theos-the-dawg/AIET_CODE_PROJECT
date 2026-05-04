@@ -1,5 +1,5 @@
 var express = require('express');
-const { resource } = require('../app');
+//const { resource } = require('../app');
 var router = express.Router();
 
 /* GET users listing. */

@@ -28,26 +28,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
-// Home Page 
-app.get('/home', (req,res) => {
-  let name = 'Gerald';
-  res.render('index',{data:name},
-    console.log(name)
-  )
-  //res.render('index',{data:name});
-
-});
-
-// About Us Page
-app.get('/about', (req, res) => {
-  //res.send('<h1>About Us</h1><p>This is the About section of our app.</p>');
-res.render('')
-});
-
-//  Contact Us Page
-app.get('/contact', (req, res) => {
-  res.send('<h1>Contact Us</h1><p>Reach out to us here.</p>');
-});
 
 // Products Page
 app.get('/products', (req, res) => {
@@ -55,7 +35,7 @@ app.get('/products', (req, res) => {
 });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+ap.usep(function(req, res, next) {
   next(createError(404));
 });
 

@@ -7,8 +7,18 @@ GET http://localhost:3000/about
 ### Get All Users
 GET http://localhost:3000/users/
 
+### Test Contact Page
+GET http://localhost:3000/contact/
+
+### Test Services Page
+GET http://localhost:3000/services/
+
 ### Login User
 POST http://localhost:3000/users/login
+Content-Type: application/json
+
+### Logout User
+POST  http://localhost:3000/users/logout
 Content-Type: application/json
 
 {}

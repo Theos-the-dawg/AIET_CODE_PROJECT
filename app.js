@@ -1,6 +1,7 @@
 const createError = require('http-errors');//handling http request that break namely (errors)
 const express = require('express'); // our express app dependencies(needed to tell the system thjat we are using expressjs)
 const path = require('path'); // This is used for setting files paths
+const session = require('express-session');
 const cookieParser = require('cookie-parser');// takes in cookie data
 const logger = require('morgan');//used for logging(logs for showing server-side ) 
 const port = 3000;//port this is optional to place in the app.,js file if you have a www. config
@@ -11,7 +12,14 @@ const usersRouter = require('./routes/users');
 //const productsRouter = require('./routes/products');
            
  
-const app = express();// start our instancce of express
+const app = express();// start our instance of express
+
+//Session setup
+app.use(session({
+  secret:'Iamcodecussler',
+  resave : false,
+  saveUninitialized:false
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

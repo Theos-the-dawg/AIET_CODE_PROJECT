@@ -10,17 +10,17 @@ router.use(bodyparser.json());
 //Users Data
 const users = [
   {id:1, Username:'Gerald', Password:"1508"},
-  {id:2, Username:'Motheo', Password:1509},
+  {id:2, Username:'Motheo', Password:"1509"},
   {id:3, Username:'Master', Password:1510}
 ];
 
 router.post('/mydata',(req,res)=>{
 const {username,password}  = req.body || {};
 
-const user = {id:1, username:'Gerald', password:"1508"}
+const user = {id:2, username:'Gerald', password:"1508"};
 console.log(username);
 console.log(password);
-if(user.id != 1){
+if(user.id != user.id){
 
   //console.log('provide the login details')
   return res.json({message:`details for user ID:${req.body.id}`})
@@ -39,6 +39,15 @@ router.post('/login',(req,res) =>{
  // const {username,password} = req.body;
   const my_user = req.body;
   console.log(my_user);
+
+  //Sending data to html form
+  router.get('/login',(req,res) =>{
+    const message = "Please enter your credentials";//Data being sent
+    res.render('/login', {
+      title: "User Login",
+      msg: message
+    });
+  });
 
   // //Finds the user
   // const user = users.find(u => u.username ===username);

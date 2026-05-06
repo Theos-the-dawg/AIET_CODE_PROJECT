@@ -5,15 +5,20 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');// takes in cookie data
 const logger = require('morgan');//used for logging(logs for showing server-side ) 
 const port = 3000;//port this is optional to place in the app.,js file if you have a www. config
-
+const bodyparser = require('body-parser');
 //routes for project files
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+
+
 //const productsRouter = require('./routes/products');
-           
+
  
 const app = express();// start our instance of express
 
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 //Session setup
 app.use(session({
   secret:'Iamcodecussler',
@@ -26,15 +31,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //middleware -- the middleman between the server the client that is going to configure or parse data
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 // Importing Routes
 const indexRoutes = require('./routes/index.js');
 const userRoutes = require('./routes/users.js');
@@ -51,16 +51,16 @@ app.use(function(req, res, next) {
 });
 
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
 app.listen(port, (req,res) =>{
 

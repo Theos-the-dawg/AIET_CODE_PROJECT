@@ -18,10 +18,7 @@ POST  http://localhost:3000/users/mydata HTTP/1.1
 
 Content-Type: application/json
 body:
-{
- "username":"Gerald",
- "password":"1508"
-  }
+{}
 ### Logout User
 POST  http://localhost:3000/users/logout
 

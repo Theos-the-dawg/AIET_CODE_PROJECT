@@ -11,7 +11,7 @@ router.use(bodyparser.json());
 const users = [
   {id:1, Username:'Gerald', Password:"1508"},
   {id:2, Username:'Motheo', Password:"1509"},
-  {id:3, Username:'Master', Password:1510}
+  {id:3, Username:'Master', Password:"1510"}
 ];
 
 router.get('/all_users',(req,res)=>{
@@ -95,10 +95,10 @@ router.post('logout',(req,res) =>{
 //Rendering login page
 
 
-// router.post('/login', (req, res) => {
-//   const {ussername,password}= req.body
-//     res.send('Welcome,{username}!');
-// });
+router.post('/login', (req, res) => {
+   const {username,password}= req.body
+     res.send('Welcome,{username}!');
+ });
 
 //Rendering logout page
 

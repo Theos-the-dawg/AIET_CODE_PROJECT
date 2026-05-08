@@ -5,7 +5,7 @@ const bcrypt =require('bcryptjs');
 const bodyparser = require('body-parser');
 const { message } = require('statuses');
 
-//router.use(express.json());
+router.use(express.json());
 router.use(bodyparser.json());
 //Users Data
 const users = [
@@ -14,39 +14,29 @@ const users = [
   {id:3, Username:'Master', Password:1510}
 ];
 
-router.post('/mydata',(req,res)=>{
-const {username,password}  = req.body || {};
+router.get('/all_users',(req,res)=>{
+//const {username,password}  = req.body || {};
+res.json(users);
 
-const user = {id:2, username:'Gerald', password:"1508"};
-console.log(username);
-console.log(password);
-if(user.id != user.id){
-
-  //console.log('provide the login details')
-  return res.json({message:`details for user ID:${req.body.id}`})
-}
-if(username === user.username && password === user.password){
-
-  console.log("a user has attempted to login in ");
-  res.json({message:"user login succ"});
-}
-
-console.log(user);
-res.send(user);
 });
 
+
+router.get('/login',(req,res) =>{
+  res.render('login');
+})
 router.post('/login',(req,res) =>{
  // const {username,password} = req.body;
   const my_user = req.body;
   console.log(my_user);
+  res.json(my_user);
 
   //Sending data to html form
-  router.get('/login',(req,res) =>{
-    const message = "Please enter your credentials";//Data being sent
-    res.render('/login', {
-      title: "User Login",
-      msg: message
-    });
+  // router.get('/login',(req,res) =>{
+  //   const message = "Please enter your credentials";//Data being sent
+  //   res.render('/login', {
+  //     title: "User Login",
+  //     msg: message
+  //   });
   });
 
   // //Finds the user
@@ -87,7 +77,7 @@ router.post('/login',(req,res) =>{
 //     return res.send('New account created and logged in!');
 // }
 
-});
+//});
 
 
 
@@ -104,9 +94,6 @@ router.post('logout',(req,res) =>{
 
 //Rendering login page
 
-router.get('/login',(req,res) =>{
-  res.render('login');
-});
 
 // router.post('/login', (req, res) => {
 //   const {ussername,password}= req.body

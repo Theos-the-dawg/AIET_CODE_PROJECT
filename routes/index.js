@@ -21,12 +21,11 @@ router.use(express.json())
 // });
 
 //IndexRoutes
-//Home route
 router.get('/',(req,res) => res.send('Welcome to Gagdet-House.'));
 router.get('/about',(req,res) => res.send('This is the our About page.'));
 router.get('/contact',(req,res) => res.send('This is our Contact page.'));
 router.get('/services',(req,res) => res.send('This is our Services page.'));
-
+router.get('/logout',(req,res) => res.send('This is the Logout page.'));
 
 
 

@@ -7,6 +7,9 @@ const { message } = require('statuses');
 
 router.use(express.json());
 router.use(bodyparser.json());
+
+
+
 //Users Data
 const users = [
   {id:1, Username:'Gerald', Password:"1508"},
@@ -15,7 +18,6 @@ const users = [
 ];
 
 router.get('/all_users',(req,res)=>{
-//const {username,password}  = req.body || {};
 res.json(users);
 
 });
@@ -23,35 +25,63 @@ res.json(users);
 
 router.get('/login',(req,res) =>{
   res.render('login');
-})
+});
+
+
+
 router.post('/login',(req,res) =>{
- // const {username,password} = req.body;
-  const my_user = req.body;
-  console.log(my_user);
-  res.json(my_user);
+  var currentlyLogginIn = false;
+  const date = new Date();
+  const username = req.body.username;
+  const  password = req.body.password;
 
-  //Sending data to html form
-  // router.get('/login',(req,res) =>{
-  //   const message = "Please enter your credentials";//Data being sent
-  //   res.render('/login', {
-  //     title: "User Login",
-  //     msg: message
-  //   });
+  if(!users){
+    console.log(`no users found`);
+  }
+
+  users.forEach(user => {
+    if(user.Username === req.body.username && user.Password === req.body.password ){
+
+      console.log(`user with the usernasme:${username} has loggin in at ${date}`);
+       currentlyLogginIn=true;
+    }
+    
   });
+ 
+//  console.log(my_user);
+  res.send(username,password);
 
-  // //Finds the user
-  // const user = users.find(u => u.username ===username);
-  // if (!user) {
-  //   return res.send('User not found');
-  // }
-  // //Compare submitted passwords with stored hash
-  // const isMatch = await bcrypt.compare(password, user.password);
-  // if (!isMatch) {
-  //   return res.send('Incorrect password');
-  // }
-  // //Saves user info in session
-  // req.session.user = { id: user.id, username: user.username};
-  // res.redirect('/dashboard'); // or whatever
+  });
+//option1
+router.get('/get_specific_user/:id',(req,res) =>{
+  //var req_data = req.body; 
+  var data = req.params.id;
+  console.log(data);
+
+ users.forEach(user => {
+  if(user.id === parseInt(data)){
+    console.log(user);
+    res.status(200).json(user);
+  }
+  
+ });
+      
+})
+//option2
+router.post('/get_specific_user',(req,res) =>{
+  var req_data = req.body;
+  console.log(req_data);
+
+ users.forEach(user => {
+  if(user.id === req.body.id){
+    console.log(user);
+    console.log(JSON.stringify(user));
+    res.json(user);
+  }
+ // console.log(user);
+ // res.json(user);
+  
+ })});
 
   //FIND THE USER
 // const user = users.find(u =>u.username === username);
@@ -97,12 +127,12 @@ router.post('logout',(req,res) =>{
 
 router.post('/login', (req, res) => {
    const {username,password}= req.body
-     res.send('Welcome,{username}!');
+     res.send(`Welcome,${username}!`);
  });
 
 //Rendering logout page
 
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     res.send('User logged out.');
 });
 

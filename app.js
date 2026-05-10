@@ -33,8 +33,6 @@ app.set('view engine', 'ejs');
 //middleware -- the middleman between the server the client that is going to configure or parse data
 
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 // Importing Routes
 const indexRoutes = require('./routes/index.js');
 const userRoutes = require('./routes/users.js');

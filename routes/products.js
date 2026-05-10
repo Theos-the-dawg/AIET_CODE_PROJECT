@@ -9,7 +9,11 @@ const products = [
 
 // Get all products
 router.get('/all_products', (req, res) => {
-    res.render('products',{data:JSON.stringify(products)})});
+    res.render('products', { 
+        title: 'All Products', 
+        productList: products // Pass the array directly
+    });
+});
 
 // Get specific product using a URL parameter
 router.get('/get-specific_product/:id', (req, res) => {

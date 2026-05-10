@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><%= title %></title>
 </head>
 <body>
-    <h1>Products Name: <%- data %></h1>
+    <h1>Available Gadgets</h1>
+    <ul>
+        <% productList.forEach(product => { %>
+            <li>
+                <strong><%= product.name %></strong> - $<%= product.price %> 
+                (ID: <%= product.id %>)
+            </li>
+        <% }); %>
+    </ul>
+    <a href="/">Back Home</a>
 </body>
 </html>

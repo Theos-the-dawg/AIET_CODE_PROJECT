@@ -1,5 +1,5 @@
 [
-  {"id":1, "Username":"Gerald", "Password":"1508"},
-  {"id":2, "Username":"Motheo", "Password":"1509"},
-  {"id":3, "Username":"Master", "Password":"1510"}
+  {"id":1, "Username":"Gerald","email":" geraldkapurura07@gmail.com","Password":"1508","role":"admin","isAdmin":"true"},
+  {"id":2, "Username":"Motheo","email":"theosthedawg@gmail.com","Password":"1509","role":"dev","isAdmin":"false"},
+  {"id":3, "Username":"Master","email":"master@gamil.com","Password":"1510","role":"dev","isAdmin":"false"}
 ]

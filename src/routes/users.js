@@ -9,32 +9,35 @@ const usersData = require('../Data/users.json');
 router.use(express.json());
 router.use(bodyparser.json()); 
 
+//code for testing if admin and seeing all the users 
 router.get('/all_users',(req,res)=>{
+
 res.render('all_users');
 
 });
 
-
+//Login
 router.get('/login',(req,res) =>{
   res.render('login');
 });
 
 
-
+//Checks if the req.body matches the email and password.           
 router.post('/login',(req,res) =>{
   var currentlyLogginIn = false;
   const date = new Date();
   const username = req.body.username;
   const  password = req.body.password;
+  const email = req.body.email;
 
   if(!usersData){
     console.log(`no users found`);
   }
 
   usersData.forEach(user => {
-    if(user.Username === req.body.username && user.Password === req.body.password ){
+    if(user.Username === req.body.username && user.Password === req.body.password && user.email === req.body.email){
 
-      console.log(`user with the usernasme:${username} has loggin in at ${date}`);
+      console.log(`user with the username:${username} has loggin in at ${date}`);
        currentlyLogginIn=true;
     }
     

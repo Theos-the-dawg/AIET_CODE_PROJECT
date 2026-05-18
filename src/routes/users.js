@@ -4,45 +4,40 @@ const router = express.Router();
 const bcrypt =require('bcryptjs');
 const bodyparser = require('body-parser');
 const { message } = require('statuses');
+const usersData = require('../Data/users.json');
 
 router.use(express.json());
-router.use(bodyparser.json());
+router.use(bodyparser.json()); 
 
-
-
-//Users Data
-const users = [
-  {id:1, Username:'Gerald', Password:"1508"},
-  {id:2, Username:'Motheo', Password:"1509"},
-  {id:3, Username:'Master', Password:"1510"}
-];
-
+//code for testing if admin and seeing all the users 
 router.get('/all_users',(req,res)=>{
-res.json(users);
+
+res.render('all_users');
 
 });
 
-
+//Login
 router.get('/login',(req,res) =>{
   res.render('login');
 });
 
 
-
+//Checks if the req.body matches the email and password.           
 router.post('/login',(req,res) =>{
   var currentlyLogginIn = false;
   const date = new Date();
   const username = req.body.username;
   const  password = req.body.password;
+  const email = req.body.email;
 
-  if(!users){
+  if(!usersData){
     console.log(`no users found`);
   }
 
-  users.forEach(user => {
-    if(user.Username === req.body.username && user.Password === req.body.password ){
+  usersData.forEach(user => {
+    if(user.Username === req.body.username && user.Password === req.body.password && user.email === req.body.email){
 
-      console.log(`user with the usernasme:${username} has loggin in at ${date}`);
+      console.log(`user with the username:${username} has loggin in at ${date}`);
        currentlyLogginIn=true;
     }
     
@@ -58,7 +53,7 @@ router.get('/get_specific_user/:id',(req,res) =>{
   var data = req.params.id;
   console.log(data);
 
- users.forEach(user => {
+ usersData.forEach(user => {
   if(user.id === parseInt(data)){
     console.log(user);
     res.status(200).json(user);
@@ -72,7 +67,7 @@ router.post('/get_specific_user',(req,res) =>{
   var req_data = req.body;
   console.log(req_data);
 
- users.forEach(user => {
+ usersData.forEach(user => {
   if(user.id === req.body.id){
     console.log(user);
     console.log(JSON.stringify(user));

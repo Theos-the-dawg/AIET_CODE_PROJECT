@@ -1,32 +1,55 @@
 const express = require('express');
-//const { render } = require('../router');
 const router = express.Router();
 
-router.use(express.json())
-/* GET home page. */
-// Home Page 
-//  router.get('/home', (req,res) => {
-//   console.log('Hi');
-//   res.send('This is the home page')
-//  });
-  
-// // About Us Page
-// router.get('/about', (req, res) => {
-//   res.send('<h1>About Us</h1><p>This is the About section of our router.</p>');
-// });
+router.use(express.json());
 
-// //  Contact Us Page
-// router.get('/contact', (req, res) => {
-//   res.send('<h1>Contact Us</h1><p>Reach out to us here.</p>');
-// });
+router.get('/', (req, res) => {
+  res.redirect('/home');
+});
 
-//IndexRoutes
-router.get('/home',(req,res) => res.send('Welcome to Gagdet-House.'));
-router.get('/about',(req,res) => res.send('This is the our About page.'));
-router.get('/contact',(req,res) => res.send('This is our Contact page.'));
-router.get('/services',(req,res) => res.send('This is our Services page.'));
-router.get('/logout',(req,res) => res.send('This is the Logout page.'));
+router.get('/home', (req, res) => {
+  res.render('home', {
+    title: 'Home',
+    active: 'home'
+  });
+});
 
+router.get('/about', (req, res) => {
+  res.render('about', {
+    title: 'About',
+    active: 'about'
+  });
+});
 
+router.get('/contact', (req, res) => {
+  res.render('contact', {
+    title: 'Contact',
+    active: 'contact'
+  });
+});
+
+router.post('/contact', (req, res) => {
+  const { name } = req.body;
+  res.render('contact', {
+    title: 'Contact',
+    active: 'contact',
+    submitted: true,
+    userName: name || 'Guest'
+  });
+});
+
+router.get('/services', (req, res) => {
+  res.render('services', {
+    title: 'Services',
+    active: 'services'
+  });
+});
+
+router.get('/logout', (req, res) => {
+  res.render('logout', {
+    title: 'Logout',
+    active: 'logout'
+  });
+});
 
 module.exports = router;

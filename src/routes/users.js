@@ -1,137 +1,68 @@
 const express = require('express');
-//const { resource } = require('../app');
 const router = express.Router();
-const bcrypt =require('bcryptjs');
-const bodyparser = require('body-parser');
-const { message } = require('statuses');
 const usersData = require('../Data/users.json');
 
 router.use(express.json());
-router.use(bodyparser.json()); 
 
-//code for testing if admin and seeing all the users 
-router.get('/all_users',(req,res)=>{
-
-res.render('all_users');
-
+router.get('/all_users', (req, res) => {
+  res.render('all_users', { users: usersData });
 });
 
-//Login
-router.get('/login',(req,res) =>{
+router.get('/login', (req, res) => {
   res.render('login');
 });
 
-
-//Checks if the req.body matches the email and password.           
-router.post('/login',(req,res) =>{
-  var currentlyLogginIn = false;
-  const date = new Date();
-  const username = req.body.username;
-  const  password = req.body.password;
-  const email = req.body.email;
-
-  if(!usersData){
-    console.log(`no users found`);
-  }
-
-  usersData.forEach(user => {
-    if(user.Username === req.body.username && user.Password === req.body.password && user.email === req.body.email){
-
-      console.log(`user with the username:${username} has loggin in at ${date}`);
-       currentlyLogginIn=true;
-    }
-    
-  });
- 
-//  console.log(my_user);
-  res.send(username,password);
-
-  });
-//option1
-router.get('/get_specific_user/:id',(req,res) =>{
-  //var req_data = req.body; 
-  var data = req.params.id;
-  console.log(data);
-
- usersData.forEach(user => {
-  if(user.id === parseInt(data)){
-    console.log(user);
-    res.status(200).json(user);
-  }
-  
- });
-      
-})
-//option2
-router.post('/get_specific_user',(req,res) =>{
-  var req_data = req.body;
-  console.log(req_data);
-
- usersData.forEach(user => {
-  if(user.id === req.body.id){
-    console.log(user);
-    console.log(JSON.stringify(user));
-    res.json(user);
-  }
- // console.log(user);
- // res.json(user);
-  
- })});
-
-  //FIND THE USER
-// const user = users.find(u =>u.username === username);
-// //if the user exists check their password
-// if (user) {
-//   if (user.password === password) {
-//     req.session.user = {id: user.id, username:
-//       user.username};
-//       return res.send ('Logged in successfully!');
-//   } else{
-//     //wrong password
-//     return res.send('Incorrect password!');
-//   }
-// } else{
-//   //if user does not exist, register them
-//   const newUser = {
-//     id: users.length + 1,
-//     username,password
-//   };
-//   users.push(newUser);
-//   req.session.user = {id:newUser.id,
-//     username:newUser.username};
-//     return res.send('New account created and logged in!');
-// }
-
-//});
-
-
-
-//Logout Logic
-
-router.post('logout',(req,res) =>{
-  req.session.destroy((err) =>{
-    if (err) return res.send('Error logging out');
-      res.redirect('users/login');
-   });
-  });
-
-
-
-//Rendering login page
-
-
 router.post('/login', (req, res) => {
-   const {username,password}= req.body
-     res.send(`Welcome,${username}!`);
- });
+  const { username, password, email } = req.body;
+  const user = usersData.find(u =>
+    u.Username === username &&
+    u.Password === password &&
+    u.email === email
+  );
 
-//Rendering logout page
+  if (!user) {
+    return res.status(401).send('Invalid credentials');
+  }
+
+  req.session.user = { id: user.id, username: user.Username };
+  res.send(`Welcome, ${user.Username}!`);
+});
+
+router.get('/get_specific_user/:id', (req, res) => {
+  const userId = Number(req.params.id);
+  const user = usersData.find(u => u.id === userId);
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  res.status(200).json(user);
+});
+
+router.post('/get_specific_user', (req, res) => {
+  const userId = Number(req.body.id);
+  const user = usersData.find(u => u.id === userId);
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  res.json(user);
+});
+
+router.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).send('Error logging out');
+    }
+    res.redirect('/users/login');
+  });
+});
 
 router.get('/logout', (req, res) => {
-    res.send('User logged out.');
+  res.send('User logged out.');
 });
 
 module.exports = router;
-    
 
 

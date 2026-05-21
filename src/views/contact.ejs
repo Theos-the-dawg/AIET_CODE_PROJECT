@@ -22,6 +22,9 @@
     <% if (submitted) { %>
       <p><strong>Thanks, <%= userName %>!</strong> Your message was sent successfully.</p>
     <% } else { %>
+      <% if (error) { %>
+        <p style="color:red;"><%= error %></p>
+      <% } %>
       <form action="/contact" method="post">
         <div>
           <label for="name">Name</label><br>

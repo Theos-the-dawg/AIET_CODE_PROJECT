@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
 
 router.get('/', (req, res) => {
   res.redirect('/home');
@@ -29,12 +30,22 @@ router.get('/contact', (req, res) => {
 });
 
 router.post('/contact', (req, res) => {
-  const { name } = req.body;
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).render('contact', {
+      title: 'Contact',
+      active: 'contact',
+      submitted: false,
+      error: 'Please complete all contact fields.'
+    });
+  }
+
   res.render('contact', {
     title: 'Contact',
     active: 'contact',
     submitted: true,
-    userName: name || 'Guest'
+    userName: name.trim() || 'Guest'
   });
 });
 

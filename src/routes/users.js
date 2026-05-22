@@ -5,6 +5,7 @@ const bcrypt =require('bcryptjs');
 const bodyparser = require('body-parser');
 const { message } = require('statuses');
 const usersData = require('../Data/users.json');
+const { Admin } = require('mongodb');
 
 router.use(express.json());
 router.use(bodyparser.json()); 
@@ -15,7 +16,7 @@ router.get('/all_users',(req,res)=>{
 res.render('all_users');
 
 });
-
+  
 //Login
 router.get('/login',(req,res) =>{
   res.render('login');
@@ -26,27 +27,28 @@ router.get('/login',(req,res) =>{
 router.post('/login',(req,res) =>{
   var currentlyLogginIn = false;
   const date = new Date();
-  const username = req.body.username;
+  //const username = req.body.username;
   const  password = req.body.password;
   const email = req.body.email;
 
-  if(!usersData){
-    console.log(`no users found`);
+let user = usersData.find(user=> 
+user.email === email && user.password ===password 
+  );
+
+  if (!user){
+   return res.sendStatus(404).send(console.log(`user not found`));
   }
 
-  usersData.forEach(user => {
-    if(user.Username === req.body.username && user.Password === req.body.password && user.email === req.body.email){
+if (user.Role === "admin"){
+  console.log(usersData);
+  res.json(usersData);
+}
+else if(user.Role === "dev"){
+  console.log('devs are not allowed');
+  //res.sendStatus(403).send('only admins are allowed to view this data');
+}
 
-      console.log(`user with the username:${username} has loggin in at ${date}`);
-       currentlyLogginIn=true;
-    }
-    
-  });
- 
-//  console.log(my_user);
-  res.send(username,password);
-
-  });
+})
 //option1
 router.get('/get_specific_user/:id',(req,res) =>{
   //var req_data = req.body; 

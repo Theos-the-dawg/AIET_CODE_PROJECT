@@ -1,37 +1,20 @@
 const express = require('express');
-const router = express.Router(); 
-const myProducts = require('../Data/products.json')
-// Get all products
-router.get('/all_products', (req, res) => {
+const router = express.Router();
+const myProducts = require('../Data/products.json');
 
-    res.json(myProducts);
+router.get('/all_products', (req, res) => {
+  res.json(myProducts);
 });
 
-// Get specific product using a URL parameter
 router.get('/get-specific_product/:id', (req, res) => {
-    const productId = parseInt(req.params.id);
+  const productId = Number(req.params.id);
+  const product = myProducts.find(p => p.id === productId);
 
-
-myProducts.forEach(product => {
-  if(product.id === productId){ 
-    console.log(product);
-    res.status(200).json(product);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
   }
-})})
 
-//    myProducts.forEach(product => {
-//         if(product.id === productId){
-//             console.log(product)
-//         }
-//      });  
-
-   // console.log(myProducts);
-    
-    // if (my_product) {
-    //     res.json(my_product);
-    // } else {
-    //     res.status(404).send('Product not found');
-    // }
-
+  res.status(200).json(product);
+});
 
 module.exports = router;

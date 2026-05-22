@@ -3,12 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>index</title>
+  <title><%= title %> | Gadget House</title>
 </head>
 <body>
-  home page
- <%= data %>
-
- 
+  <header>
+    <h1>Gadget House</h1>
+    <p>Your trusted tech marketplace for gadgets and accessories.</p>
+    <nav>
+      <a href="/home">Home</a> |
+      <a href="/about">About</a> |
+      <a href="/services">Services</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
+  <main>
+    <h2>Welcome to Gadget House</h2>
+    <p>Discover our curated selection of gadgets, accessories, and services designed to make life easier and more enjoyable.</p>
+    <h3>What we offer</h3>
+    <ul>
+      <li>Quality products from trusted brands</li>
+      <li>Fast support for every purchase</li>
+      <li>Simple, secure checkout</li>
+    </ul>
+  </main>
+  <footer>
+    <p>&copy; <%= new Date().getFullYear() %> Gadget House</p>
+  </footer>
 </body>
 </html>

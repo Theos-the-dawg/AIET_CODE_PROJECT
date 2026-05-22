@@ -1,45 +1,32 @@
-const createError = require('http-errors');//handling http request that break namely (errors)
-const express = require('express'); // our express app dependencies(needed to tell the system thjat we are using expressjs)
-const path = require('path'); // This is used for setting files paths
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
 const session = require('express-session');
-const cookieParser = require('cookie-parser');// takes in cookie data
-const logger = require('morgan');//used for logging(logs for showing server-side ) 
-const port = 3000;//port this is optional to place in the app.,js file if you have a www. config
-const bodyparser = require('body-parser');
-//routes for project files
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-
-//const productsRouter = require('./routes/products');
-
- 
-const app = express();// start our instance of express
+const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-//Session setup
+app.use(express.static(path.join(__dirname, 'views', 'public')));
+
 app.use(session({
-  secret:'Iamcodecussler',
-  resave : false,
-  saveUninitialized:false
+  secret: 'Iamcodecussler',
+  resave: false,
+  saveUninitialized: false
 }));
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//middleware -- the middleman between the server the client that is going to configure or parse data
+const indexRoutes = require('./routes/index');
+const userRoutes = require('./routes/users');
+const productRoutes = require('./routes/products');
 
-
-
-// Importing Routes
-const indexRoutes = require('./routes/index.js');
-const userRoutes = require('./routes/users.js');
-const productRoutes = require('./routes/products.js');
-
-// Using Routes
 app.use('/', indexRoutes);
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
@@ -49,20 +36,24 @@ app.use('/products', productRoutes);
 //   next(createError(404));
 // });
 
+app.use(function(err, req, res, next) {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.status(err.status || 500);
+  res.render('error');
+});
 
-// // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+const server = app.listen(port, () => {
+  console.log(`App is running at http://127.0.0.1:${port}/`);
+});
 
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${port} is already in use. Try another port with PORT=3001 npm run start.`);
+  } else {
+    console.error('Server error:', error);
+  }
+  process.exit(1);
+});
 
-app.listen(port, (req,res) =>{
-
-  console.log(`url for the app  is defaulted to this 127.0.0.1:${port}/`)
-})
 module.exports = app;

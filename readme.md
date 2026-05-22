@@ -149,7 +149,7 @@ Renders the login form and handles user aunthentication.
 127.0.0.1:3000/Users/Logout:
 Logs the current user out and ends their session.
 127.0.0.1:3000/Get_user:
-Retrieves a specific user's infromation by theird ID.
+Retrieves a specific user's infromation by their ID.
 127.0.0.1:3000/Users/My_Data:
 Displays the curreently logged in user's own profile and data.
 ---

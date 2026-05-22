@@ -131,7 +131,27 @@ Client (Browser) → Express Server → Database
 - Home page with featured products
 - Navigation bar with categories
 - Simple product cards layout
-
+### Endpoints Explanation
+-127.0.0.1:3000/HOME:
+Renders the main landing page of Gadget House.
+-127.0.0.1:3000/ABOUT:
+Displays the About page with Gadget Houses's story and values.
+-127.0.0.1:3000/CONTACT:
+Shows a contact form for users to send meassges to Gadget-House.
+127.0.0.1:3000/SERVICES:
+Highlights key services offered, such as techsupport and warranty, and secure checkout.
+127.0.0.1:3000/Get_Product_By_Id:
+Fetches and displays details of a single products by it's ID.
+127.0.0.1:3000/Get_All_Products:
+Retrieves and lists all available products in the store.
+127.0.0.1:3000/Users/Login:
+Renders the login form and handles user aunthentication.
+127.0.0.1:3000/Users/Logout:
+Logs the current user out and ends their session.
+127.0.0.1:3000/Get_user:
+Retrieves a specific user's infromation by theird ID.
+127.0.0.1:3000/Users/My_Data:
+Displays the curreently logged in user's own profile and data.
 ---
 
 ## 💻 4. Development Phase

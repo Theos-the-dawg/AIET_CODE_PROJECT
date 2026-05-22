@@ -21,13 +21,14 @@ router.get('/about', (req, res) => {
     active: 'about'
   });
 });
+router.get('/contact',(req,res)=>{
 
-router.get('/contact', (req, res) => {
-  res.render('contact', {
-    title: 'Contact',
-    active: 'contact'
-  });
-});
+  res.render('contact',{
+    title:"contact",
+    userName:"Gerald",
+    submitted:false,
+  error:"Please complete all contact fields."});
+})
 
 router.post('/contact', (req, res) => {
   const { name, email, message } = req.body;

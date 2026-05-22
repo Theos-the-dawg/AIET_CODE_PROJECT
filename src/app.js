@@ -36,24 +36,24 @@ app.use('/products', productRoutes);
 //   next(createError(404));
 // });
 
-app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
-});
+// app.use(function(err, req, res, next) {
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
 const server = app.listen(port, () => {
   console.log(`App is running at http://127.0.0.1:${port}/`);
 });
 
-server.on('error', (error) => {
-  if (error.code === 'EADDRINUSE') {
-    console.error(`Port ${port} is already in use. Try another port with PORT=3001 npm run start.`);
-  } else {
-    console.error('Server error:', error);
-  }
-  process.exit(1);
-});
+// server.on('error', (error) => {
+//   if (error.code === 'EADDRINUSE') {
+//     console.error(`Port ${port} is already in use. Try another port with PORT=3001 npm run start.`);
+//   } else {
+//     console.error('Server error:', error);
+//   }
+//   process.exit(1);
+// });
 
 module.exports = app;

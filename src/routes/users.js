@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const usersData = require('../Data/users.json');
+const fs = require("fs");
 const { Admin } = require('mongodb');
+const {body,validationresult} = require("../utilities/validations.js");
 
 router.use(express.json());
 
@@ -9,21 +11,37 @@ router.get('/all_users', (req, res) => {
   res.render('all_users', { users: usersData });
 });
 
+router.post('/register', (req,res)=>{
+
+  fs.readFile('../Data/users.json', 'utf-8', (err,data) =>{
+    if(err){
+      console.log('there is an problem with reading the file');
+    return;
+    }
+    const id = usersData.id.at(-1) +1;
+  const {username,email,password,} = req.body;
+  
+  
+
+  })
+})
+
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
 router.post('/login', (req, res) => {
-  const { username, password } = req.body;
+  const {username,email,password,} = req.body;
   const user = usersData.find(u =>
     u.Username === username &&
+    u.email === email &&
     u.Password === password
   );
 
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
-
+ 
   req.session.user = { id: user.id, username: user.Username };
   res.json({ message: `Welcome, ${user.Username}!`, user: user.Username });
 });

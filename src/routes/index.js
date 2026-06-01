@@ -1,8 +1,19 @@
 const express = require('express');
+
 const router = express.Router();
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
+
+
+
+router.get('/dummy',(req,res) => {
+    if (!req.session.visits)
+       { req.session.visits = 0;}
+    req.session.visits++;
+    res.send(`You have visited this page ${req.session.visits} times. `)
+  ;
+});
 
 router.get('/', (req, res) => {
   res.redirect('/home');

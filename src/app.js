@@ -1,4 +1,4 @@
-const createError = require('http-errors');
+//const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -11,14 +11,19 @@ const port = process.env.PORT || 3000;
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'views', 'public')));
 
 app.use(session({
-  secret: 'Iamcodecussler',
-  resave: false,
-  saveUninitialized: false
-}));
+    secret:'iamCodeCussler',//my security key
+    resave:false, //to avoid resaving uchanged sessions
+    saveUninitialized:false,//only save sessions with initialized data 
+    cookie:function(req){
+return  {httpOnly:true,//prevents javascript access to the cookie.
+         secure: req.secure || false,
+        maxAge: 60000}
+    }
+}))
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

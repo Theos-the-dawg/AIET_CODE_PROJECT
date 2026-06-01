@@ -69,10 +69,16 @@ router.post('/get_specific_user', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
+  if (!req.session.user) return
+  res.json({ message: 'User logged out.' });
+
   req.session.destroy(err => {
     if (err) {
       return res.status(500).send('Error logging out');
-    }
+    } 
+    //Clear the cookie
+    res.clearCookie('sid');
+    res.status(200).json({ message: 'User logged out successfully.' });
     res.redirect('/users/login');
   });
 });

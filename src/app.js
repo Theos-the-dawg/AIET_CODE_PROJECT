@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views', 'public')));
 
 app.use(session({
+    name:'sid',//name of the cookie to store session id
     secret:'iamCodeCussler',//my security key
     resave:false, //to avoid resaving uchanged sessions
     saveUninitialized:false,//only save sessions with initialized data 

@@ -15,7 +15,7 @@ router.post('/register', (req,res)=>{
 
   fs.readFile('../Data/users.json', 'utf-8', (err,data) =>{
     if(err){
-      console.log('there is an problem with reading the file');
+      console.log('There is a problem with reading the file');
     return;
     }
     const id = usersData.id.at(-1) +1;

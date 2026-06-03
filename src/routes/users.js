@@ -15,7 +15,7 @@ router.post('/register', (req,res)=>{
 
   fs.readFile('../Data/users.json', 'utf-8', (err,data) =>{
     if(err){
-      console.log('there is an problem with reading the file');
+      console.log('There is a problem with reading the file');
     return;
     }
     const id = usersData.id.at(-1) +1;
@@ -70,10 +70,16 @@ router.post('/get_specific_user', (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
+  if (!req.session.user) return
+  res.json({ message: 'User logged out.' });
+
   req.session.destroy(err => {
     if (err) {
       return res.status(500).send('Error logging out');
-    }
+    } 
+    //Clear the cookie
+    res.clearCookie('sid');
+    res.status(200).json({ message: 'User logged out successfully.' });
     res.redirect('/users/login');
   });
 });

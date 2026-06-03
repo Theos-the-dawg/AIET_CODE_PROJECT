@@ -3,6 +3,8 @@ const router = express.Router();
 const usersData = require('../Data/users.json');
 const fs = require("fs");
 const { Admin } = require('mongodb');
+const User = require('../models/users');
+const { error } = require('console');
 //const {body,validationresult} = require("../utilities/validations.js");
 
 //router.use(express.json());
@@ -11,7 +13,47 @@ router.get('/all_users', (req, res) => {
   res.render('all_users', { users: usersData });
 });
 
-router.post('/register', (req,res)=>{
+router.post('/register', async (req,res)=>{
+  try{
+    const {username,email,password} = req.body;
+    if(!username || email || password) {
+      return res.status(400).json({
+        error:"Please provide a username, email, and password"
+      });
+    }
+
+    const ExistingUser = await usersData.findOne({
+      $or:[{email}, {username}]
+    });
+    
+    if (ExistingUser){
+      return res.status(409).json({
+        error:"User with  this email or username already exists"
+      });
+    }
+    
+    //Create new User
+    const newUser = new User({
+      username,
+      email,
+      password
+    });
+    const savedUser = await newUser.save();
+    //Return the created user(excluding password in response)
+    const userResponse = savedUser.toObject();
+    delete userResponse.password;
+    
+    res.status(201).json({
+      message:"User registered successfully",
+      user: userResponse
+    });  
+  } catch(error){
+    console.log('Registration error:',error);
+    res.status(500).json({
+      error:"Internal server error",
+      details:console.error.message
+    });
+  }
 
   fs.readFile('../Data/users.json', 'utf-8', (err,data) =>{
     if(err){
@@ -19,7 +61,7 @@ router.post('/register', (req,res)=>{
     return;
     }
     const id = usersData.id.at(-1) +1;
-  const {username,email,password,} = req.body;
+    const {username,email,password,} = req.body;
   
   
 

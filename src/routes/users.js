@@ -3,9 +3,9 @@ const router = express.Router();
 const usersData = require('../Data/users.json');
 const fs = require("fs");
 const { Admin } = require('mongodb');
-const {body,validationresult} = require("../utilities/validations.js");
+//const {body,validationresult} = require("../utilities/validations.js");
 
-router.use(express.json());
+//router.use(express.json());
 
 router.get('/all_users', (req, res) => {
   res.render('all_users', { users: usersData });
@@ -41,6 +41,7 @@ router.post('/login', (req, res) => {
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
+  console.log(user);
  
   req.session.user = { id: user.id, username: user.Username };
   res.json({ message: `Welcome, ${user.Username}!`, user: user.Username });

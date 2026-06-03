@@ -2,12 +2,13 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
+//const bodyParser = require('body-parser');
+//const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+//app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views', 'public')));
 
 app.use(session({
+    name:'gadgethousecookie',
     secret:'iamCodeCussler',//my security key
     resave:false, //to avoid resaving uchanged sessions
     saveUninitialized:false,//only save sessions with initialized data 

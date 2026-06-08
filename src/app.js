@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+require('dotenv').config();
 const mongoose = require('mongoose');
 //const bodyParser = require('body-parser');
 //const cookieParser = require('cookie-parser');
@@ -16,12 +17,11 @@ app.use(express.urlencoded({ extended: true }));//for form data if neeeded
 //app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'views', 'public')));
 
-mongoose.connect('mongodb://localhost:127.0.0.1:3000/Cluster0',{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-})
-.then( () => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', error));
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Cluster0';
+
+mongoose.connect(mongoURI)
+.then(() => console.log(`MongoDB connected to ${mongoURI}`))
+.catch(err => console.error('MongoDB connection error:', err));
 
 app.use(session({
     name:'sid',//name of the cookie to store session id
@@ -41,7 +41,6 @@ app.set('view engine', 'ejs');
 const indexRoutes = require('./routes/index');
 const userRoutes = require('./routes/users');
 const productRoutes = require('./routes/products');
-const { error } = require('console');
 
 app.use('/', indexRoutes);
 app.use('/users', userRoutes);

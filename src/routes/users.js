@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const usersData = require('../Data/users.json');
-const fs = require("fs");
-const { Admin } = require('mongodb');
+const fs = require('fs');
 const User = require('../models/users');
-const { error } = require('console');
 //const {body,validationresult} = require("../utilities/validations.js");
 
 //router.use(express.json());
@@ -15,18 +13,18 @@ router.get('/all_users', (req, res) => {
 
 *outer.post('/register', async (req,res)=>{
   try{
-    const {username,email,password} = req.body;
-    if(!username || email || password) {
+    const { username, email, password } = req.body;
+    if (!username || !email || !password) {
       return res.status(400).json({
-        error:"Please provide a username, email, and password"
+        error: "Please provide a username, email, and password"
       });
     }
 
-    const ExistingUser = await usersData.findOne({
-      $or:[{email}, {username}]
+    const ExistingUser = await User.findOne({
+      $or: [{ email }, { username }]
     });
-    
-    if (ExistingUser){
+
+    if (ExistingUser) {
       return res.status(409).json({
         error:"User with  this email or username already exists"
       });
@@ -44,29 +42,17 @@ router.get('/all_users', (req, res) => {
     delete userResponse.password;
     
     res.status(201).json({
-      message:"User registered successfully",
+      message: "User registered successfully",
       user: userResponse
-    });  
-  } catch(error){
-    console.log('Registration error:',error);
+    });
+  } catch (error) {
+    console.log('Registration error:', error);
     res.status(500).json({
-      error:"Internal server error",
-      details:console.error.message
+      error: "Internal server error",
+      details: error.message
     });
   }
-
-  fs.readFile('../Data/users.json', 'utf-8', (err,data) =>{
-    if(err){
-      console.log('There is a problem with reading the file');
-    return;
-    }
-    const id = usersData.id.at(-1) +1;
-    const {username,email,password,} = req.body;                                                                                                                                                                                           290-
-  
-  
-
-  })
-})
+});
 
 router.get('/login', (req, res) => {
   res.render('login');

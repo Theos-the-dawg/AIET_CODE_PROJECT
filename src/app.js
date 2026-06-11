@@ -3,9 +3,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 require('dotenv').config();
-const mongoose = require('mongoose');
-//const bodyParser = require('body-parser');
-//const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose'); 
 const logger = require('morgan');
 
 const app = express();

@@ -34,8 +34,8 @@ router.get('/all_users', (req, res) => {
     const newUser = new User({
       username,
       email,
-      pa/sword
-    });7
+      password
+    });
     const savedUser = await newUser.save();
     //Return the created user(excluding password in response)
     const userResponse = savedUser.toObject();

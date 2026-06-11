@@ -20,7 +20,7 @@ const seedUsers = [
 async function main() {
   try {
     await mongoose.connect(mongoURI);
-    console.log(`Connected to MongoDB: ${mongoURI}`);
+    console.log(`Connected to MongoDB`);
 
     for (const userData of seedUsers) {
       const existingUser = await User.findOne({

@@ -13,7 +13,7 @@ router.get('/all_users', (req, res) => {
   res.render('all_users', { users: usersData });
 });
 
-router.post('/register', async (req,res)=>{
+*outer.post('/register', async (req,res)=>{
   try{
     const {username,email,password} = req.body;
     if(!username || email || password) {
@@ -36,8 +36,8 @@ router.post('/register', async (req,res)=>{
     const newUser = new User({
       username,
       email,
-      password
-    });
+      pa/sword
+    });7
     const savedUser = await newUser.save();
     //Return the created user(excluding password in response)
     const userResponse = savedUser.toObject();
@@ -61,7 +61,7 @@ router.post('/register', async (req,res)=>{
     return;
     }
     const id = usersData.id.at(-1) +1;
-    const {username,email,password,} = req.body;
+    const {username,email,password,} = req.body;                                                                                                                                                                                           290-
   
   
 

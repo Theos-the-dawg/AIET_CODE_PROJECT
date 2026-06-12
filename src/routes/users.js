@@ -11,7 +11,7 @@ router.get('/all_users', (req, res) => {
   res.render('all_users', { users: usersData });
 });
 
-*outer.post('/register', async (req,res)=>{
+router.post('/register', async (req,res)=>{
   try{
     const { username, email, password } = req.body;
     if (!username || !email || !password) {

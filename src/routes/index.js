@@ -5,7 +5,9 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+// router.post('/register',(req,res) =>{
 
+// })
 
 router.get('/dummy',(req,res) => {
     if (!req.session.visits)

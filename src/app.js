@@ -2,12 +2,8 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-require('dotenv').config();
-<<<<<<< HEAD
-const mongoose = require('mongoose'); 
-=======
+const env = require('dotenv').config();
 const mongoose = require('mongoose');
->>>>>>> cb22913f16d70282616f7e1065503fb179386259
 const logger = require('morgan');
 
 const app = express();

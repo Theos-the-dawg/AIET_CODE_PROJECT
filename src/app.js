@@ -2,23 +2,28 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')
 const env = require('dotenv').config();
 const mongoose = require('mongoose');
+const mongoURI = process.env.MONGODB_URI;
 const logger = require('morgan');
-
 const app = express();
 const port = process.env.PORT || 3000;
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));//for form data if neeeded
 
 app.use(express.static(path.join(__dirname, 'views', 'public')));
 
-const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Cluster0';
+
 
 mongoose.connect(mongoURI)
 .then(() => console.log(`MongoDB connected to ${mongoURI}`))
-.catch(err => console.error('MongoDB connection error:', err));
+.catch(err => {
+  console.error('MongoDB connection error:', err);
+  process.exit(1); //exit if db doesn't connect.
+});
 
 app.use(session({
     name:'sid',//name of the cookie to store session id
@@ -27,9 +32,11 @@ app.use(session({
     saveUninitialized:false,//only save sessions with initialized data 
     cookie: {
         httpOnly: true,//prevents javascript access to the cookie.
-        secure: false,
-    }
-}));
+        secure: false,//Set true if playing if using HTTPS
+        maxAge:24*60*60*1000//1 day
+    },  
+    })
+);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

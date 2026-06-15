@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose');
-
+let date = new Date
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   regDate: {
     type: Date,
-    default: Date.now
+    default: date.toISOString()
   }
 });
 

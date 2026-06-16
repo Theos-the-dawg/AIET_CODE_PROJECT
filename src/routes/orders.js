@@ -14,6 +14,7 @@ function isAuthenticated(req, res, next) {
 router.post('/place', isAuthenticated, async (req, res) => {
   try {
     const { productId, quantity } = req.body;
+
     if (!productId || !quantity || quantity < 1) {
       return res.status(400).json({ error: 'Please provide a valid productId and quantity' });
     }
@@ -54,7 +55,8 @@ router.post('/place', isAuthenticated, async (req, res) => {
 
 router.get('/mine', isAuthenticated, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.session.user.id }).populate('product', 'name price description');
+    const orders = await Order.find({ user: req.session.user.id })
+      .populate('product', 'name price description');
     res.json(orders);
   } catch (error) {
     res.status(500).json({ error: 'Unable to load orders' });

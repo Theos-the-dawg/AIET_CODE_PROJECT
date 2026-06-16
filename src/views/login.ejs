@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+  <title><%= title %> | Gadget House</title>
 </head>
 <body>
-    <h1>Login to Gadget-House</h1>
-    <form action="/users/login" method="POST">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
+  <h1>Login to Gadget House</h1>
+  <form action="/users/login" method="POST">
+    <div>
+      <label for="username">Username</label>
+      <input id="username" type="text" name="username" placeholder="Username">
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email" placeholder="Email">
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" placeholder="Password" required>
+    </div>
+    <button type="submit">Login</button>
+  </form>
+  <p>New user? <a href="/users/register">Register here</a></p>
 </body>
-</html>~
+</html>

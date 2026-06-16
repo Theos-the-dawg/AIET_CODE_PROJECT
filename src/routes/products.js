@@ -2,6 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.render('products', { title: 'Products', products });
+  } catch (error) {
+    res.status(500).send('Unable to load products');
+  }
+});
+
 router.get('/all_products', async (req, res) => {
   try {
     const products = await Product.find();

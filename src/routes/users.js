@@ -3,19 +3,23 @@ const router = express.Router();
 const User = require('../models/users');
 const bcrypt = require('bcryptjs');
 
-// List all users from MongoDB, excluding passwords
 router.get('/all_users', async (req, res) => {
   try {
     const users = await User.find().select('-password');
-    res.render('all_users', { users });
+    res.render('users', { users });
   } catch (error) {
     res.status(500).json({ error: 'Unable to load users' });
   }
 });
 
+router.get('/register', (req, res) => {
+  res.render('register', { title: 'Register' });
+});
+
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
     if (!username || !email || !password) {
       return res.status(400).json({
         error: 'Please provide a username, email, and password'
@@ -35,8 +39,8 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    const salt = await bcrypt.genSalt(10); // bcrypt salt
-    const hashedPassword = await bcrypt.hash(password, salt); // hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
       username: trimmedUsername,
@@ -62,12 +66,13 @@ router.post('/register', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', { title: 'Login' });
 });
 
 router.post('/login', async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
     if (!password || (!username && !email)) {
       return res.status(400).json({
         error: 'Please provide username or email and password'
@@ -99,30 +104,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/get_specific_user/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select('-password');
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: 'User lookup failed' });
-  }
-});
-
-router.post('/get_specific_user', async (req, res) => {
-  try {
-    const user = await User.findById(req.body.id).select('-password');
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ error: 'User lookup failed' });
-  }
-});
-
 router.post('/logout', (req, res) => {
   if (!req.session.user) {
     return res.status(400).json({ error: 'No active session' });
@@ -135,10 +116,6 @@ router.post('/logout', (req, res) => {
     res.clearCookie('sid');
     res.status(200).json({ message: 'User logged out successfully.' });
   });
-});
-
-router.get('/logout', (req, res) => {
-  res.send('User logged out.');
 });
 
 router.get('/mydata', async (req, res) => {

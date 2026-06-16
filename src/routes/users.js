@@ -1,54 +1,61 @@
 const express = require('express');
 const router = express.Router();
-const usersData = require('../Data/users.json');
-const fs = require('fs');
 const User = require('../models/users');
-//const {body,validationresult} = require("../utilities/validations.js");
+const bcrypt = require('bcryptjs');
 
-//router.use(express.json());
-
-router.get('/all_users', (req, res) => {
-  res.render('all_users', { users: usersData });
+// List all users from MongoDB, excluding passwords
+router.get('/all_users', async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.render('all_users', { users });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to load users' });
+  }
 });
 
-router.post('/register', async (req,res)=>{
-  try{
+router.post('/register', async (req, res) => {
+  try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
       return res.status(400).json({
-        error: "Please provide a username, email, and password"
+        error: 'Please provide a username, email, and password'
       });
     }
 
-    const ExistingUser = await User.findOne({
-      $or: [{ email }, { username }]
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const trimmedUsername = String(username).trim();
+
+    const existingUser = await User.findOne({
+      $or: [{ email: normalizedEmail }, { username: trimmedUsername }]
     });
 
-    if (ExistingUser) {
+    if (existingUser) {
       return res.status(409).json({
-        error:"User with  this email or username already exists"
+        error: 'User with this email or username already exists'
       });
     }
-    
-    //Create new User
+
+    const salt = await bcrypt.genSalt(10); // bcrypt salt
+    const hashedPassword = await bcrypt.hash(password, salt); // hash the password
+
     const newUser = new User({
-      username,
-      email,
-      password
+      username: trimmedUsername,
+      email: normalizedEmail,
+      password: hashedPassword
     });
+
     const savedUser = await newUser.save();
-    //Return the created user(excluding password in response)
     const userResponse = savedUser.toObject();
     delete userResponse.password;
-    
+
     res.status(201).json({
-      message: "User registered successfully",
+      message: 'User registered successfully',
       user: userResponse
     });
   } catch (error) {
     console.log('Registration error:', error);
     res.status(500).json({
-      error: "Internal server error",
+      error: 'Internal server error',
       details: error.message
     });
   }
@@ -58,57 +65,75 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
-router.post('/login', (req, res) => {
-  const {username,email,password,} = req.body;
-  const user = usersData.find(u =>
-    u.Username === username &&
-    u.email === email &&
-    u.Password === password
-  );
+router.post('/login', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    if (!password || (!username && !email)) {
+      return res.status(400).json({
+        error: 'Please provide username or email and password'
+      });
+    }
 
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+    const trimmedUsername = username ? String(username).trim() : null;
+    const normalizedEmail = email ? String(email).trim().toLowerCase() : null;
+
+    const user = await User.findOne(
+      trimmedUsername
+        ? { username: trimmedUsername }
+        : { email: normalizedEmail }
+    );
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    req.session.user = { id: user._id.toString(), username: user.username };
+    res.json({ message: `Welcome, ${user.username}!`, user: user.username });
+  } catch (error) {
+    res.status(500).json({ error: 'Login failed', details: error.message });
   }
-  console.log(user);
- 
-  req.session.user = { id: user.id, username: user.Username };
-  res.json({ message: `Welcome, ${user.Username}!`, user: user.Username });
 });
 
-router.get('/get_specific_user/:id', (req, res) => {
-  const userId = Number(req.params.id);
-  const user = usersData.find(u => u.id === userId);
-
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
+router.get('/get_specific_user/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'User lookup failed' });
   }
-
-  res.status(200).json(user);
 });
 
-router.post('/get_specific_user', (req, res) => {
-  const userId = Number(req.body.id);
-  const user = usersData.find(u => u.id === userId);
-
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
+router.post('/get_specific_user', async (req, res) => {
+  try {
+    const user = await User.findById(req.body.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'User lookup failed' });
   }
-
-  res.json(user);
 });
 
 router.post('/logout', (req, res) => {
-  if (!req.session.user) return
-  res.json({ message: 'User logged out.' });
+  if (!req.session.user) {
+    return res.status(400).json({ error: 'No active session' });
+  }
 
   req.session.destroy(err => {
     if (err) {
       return res.status(500).send('Error logging out');
-    } 
-    //Clear the cookie
+    }
     res.clearCookie('sid');
     res.status(200).json({ message: 'User logged out successfully.' });
-    res.redirect('/users/login');
   });
 });
 
@@ -116,45 +141,57 @@ router.get('/logout', (req, res) => {
   res.send('User logged out.');
 });
 
-router.get('/mydata', (req, res) => {
+router.get('/mydata', async (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
 
-  const user = usersData.find(u => u.id === req.session.user.id);
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
+  try {
+    const user = await User.findById(req.session.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to load user data' });
   }
-
-  res.json(user);
 });
 
-router.post('/get_user', (req, res) => {
-  const { id, username } = req.body;
+router.post('/get_user', async (req, res) => {
+  try {
+    const { id, username } = req.body;
+    let query = null;
 
-  let user;
-  if (id) {
-    user = usersData.find(u => u.id === Number(id));
-  } else if (username) {
-    user = usersData.find(u => u.Username === username);
+    if (id) {
+      query = { _id: id };
+    } else if (username) {
+      query = { username: String(username).trim() };
+    }
+
+    if (!query) {
+      return res.status(400).json({ error: 'Please provide id or username' });
+    }
+
+    const user = await User.findOne(query).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'User lookup failed' });
   }
-
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
-
-  res.json(user);
 });
 
-router.get('/get_user_2/:id', (req, res) => {
-  const userId = Number(req.params.id);
-  const user = usersData.find(u => u.id === userId);
-
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
+router.get('/get_user_2/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'User lookup failed' });
   }
-
-  res.json(user);
 });
 
 module.exports = router;

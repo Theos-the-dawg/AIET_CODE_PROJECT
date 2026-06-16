@@ -1,8 +1,8 @@
-
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')
+const MongoStoreModule = require('connect-mongo');
+const MongoStore = MongoStoreModule.default || MongoStoreModule; // support current connect-mongo export
 const env = require('dotenv').config();
 const mongoose = require('mongoose');
 const mongoURI = process.env.MONGODB_URI;
@@ -16,8 +16,6 @@ app.use(express.urlencoded({ extended: true }));//for form data if neeeded
 
 app.use(express.static(path.join(__dirname, 'views', 'public')));
 
-
-
 mongoose.connect(mongoURI)
 .then(() => console.log(`MongoDB connected to ${mongoURI}`))
 .catch(err => {
@@ -30,6 +28,10 @@ app.use(session({
     secret:'iamCodeCussler',//my security key
     resave:false, //to avoid resaving unchanged sessions
     saveUninitialized:false,//only save sessions with initialized data 
+    store: MongoStore.create({ // store sessions in MongoDB
+      mongoUrl: mongoURI,
+      collectionName: 'sessions'
+    }),
     cookie: {
         httpOnly: true,//prevents javascript access to the cookie.
         secure: false,//Set true if playing if using HTTPS

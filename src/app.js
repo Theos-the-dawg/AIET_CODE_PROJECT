@@ -47,11 +47,13 @@ const indexRoutes = require('./routes/index');
 const userRoutes = require('./routes/users');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
+const invoiceRoutes = require('./routes/invoices');
 //mount router files to specific URL paths
 app.use('/', indexRoutes);
 app.use('/users', userRoutes);
 app.use('/products', productRoutes);
-app.use('orders',orderRoutes);
+app.use('/orders', orderRoutes);
+app.use('/invoices', invoiceRoutes);
 app.use((err, req, res, next) => {//global error handler middleware
   console.error(err.stack);//logs full error stack trace to the console
   res.status(500).json({ error: 'Internal Server Error' });

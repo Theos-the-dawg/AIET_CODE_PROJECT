@@ -46,39 +46,40 @@ router.post('/place', isAuthenticated, async (req, res) => {
 
     const savedOrder = await order.save();//saves new purchases transanction document to database
 
-    //New Invoice Generation
-    //Generate a unique invoice number
+    // New Invoice Generation
+    const invoiceNumber = `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     const invoice = new Invoice({
       invoiceNumber,
-      order: savesOrder._id,
-      user:user._id,
-      product:product._id,
+      order: savedOrder._id,
+      user: user._id,
+      product: product._id,
       quantity,
-      totalPrice:order.totalPrice
+      totalPrice: savedOrder.totalPrice
     });
 
-    const savedInvoice = await invoice.save(); 
+    const savedInvoice = await invoice.save();
 
     res.status(201).json({
       message: 'Order placed and invoice generated successfully',
       order: savedOrder,
-      invoice:savedInvoice //sends the invoice back to the frontend
+      invoice: savedInvoice // sends the invoice back to the frontend
     });
   } catch (error) {
     res.status(500).json({ error: 'Order placement failed', details: error.message });
   }
 });
 
-router.get('/my-invoices'),isAuthenticated, async(req,res) =>{
-  try{
-    const invoices = await Invoice.find({user:req.session.user.id})
-    .populate('product','name price')
-    .sort({issuedAt:-1})//newest first
+router.get('/my-invoices', isAuthenticated, async (req, res) => {
+  try {
+    const invoices = await Invoice.find({ user: req.session.user.id })
+      .populate('product', 'name price')
+      .sort({ createdAt: -1 }); // newest first
+
     res.json(invoices);
-  } catch(error) {
-    res.status(500).json({error:'Unable to load invoices'});
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to load invoices' });
   }
-}
+});
 
 router.get('/mine', isAuthenticated, async (req, res) => {
   try {

@@ -1,17 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router();//creates an isolated express router instance
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
-
+// a route to test session session storage increments
 router.get('/dummy', (req, res) => {
-  if (!req.session.visits) {
-    req.session.visits = 0;
+  if (!req.session.visits) { //if the session property vsists does not exist 
+    req.session.visits = 0; //initialize i to zero
   }
-  req.session.visits += 1;
+  req.session.visits += 1;//increment coubnt by 1
   res.send(`You have visited this page ${req.session.visits} times.`);
 });
 
+//redirects root domain calls directly
 router.get('/', (req, res) => {
   res.redirect('/home');
 });
@@ -28,6 +29,7 @@ router.get('/services', (req, res) => {
   res.render('services', { title: 'Services', active: 'services' });
 });
 
+//renders views/contact.ejs passing a default state where form is not yet submitted
 router.get('/contact', (req, res) => {
   res.render('contact', {
     title: 'Contact',

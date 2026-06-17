@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   regDate: {
     type: Date,
-    default: Date.now // dynamic timestamp for each new user
+    default: new Date().toISOString() // dynamic timestamp for each new user
   }
 });
 

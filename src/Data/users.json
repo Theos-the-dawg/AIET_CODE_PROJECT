@@ -15,7 +15,7 @@
 
   {"id":3,
   "Username":"Master",
-  "email":"master@gamil.com",
+  "email":"master@gmail.com",
   "Password":"1510",
   "role":"dev",
   "isAdmin":"false"}

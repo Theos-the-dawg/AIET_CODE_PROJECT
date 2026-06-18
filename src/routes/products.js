@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require ('express');
 const router = express.Router();
 const Product = require('../models/product');//connects model interface handling product entries
 

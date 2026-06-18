@@ -8,7 +8,7 @@ const invoiceSchema = new mongoose.Schema({
     quantity: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
     status: { type: String, enum: ['Paid', 'Pending', 'Cancelled'], default: 'Paid' },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: new Date().toLocaleString() }
 });
 
 module.exports = mongoose.model('Invoice',invoiceSchema);

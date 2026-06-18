@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();//creates an isolated express router instance
 
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
-// a route to test session session storage increments
 router.get('/dummy', (req, res) => {
   if (!req.session.visits) { //if the session property vsists does not exist 
     req.session.visits = 0; //initialize i to zero

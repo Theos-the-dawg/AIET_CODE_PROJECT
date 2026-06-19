@@ -2,6 +2,20 @@ const express = require ('express');
 const router = express.Router();
 const Product = require('../models/product');//connects model interface handling product entries
 
+router.get('/register',async (req,res) =>{
+  res.render('register_product',{title:'Register New Product'});
+  
+  router.post('register',async(req,res)=>{
+    try{
+      const newProduct =  new Product(req.body);//take the data sent from the request body
+      const savedProduct =  await newProduct.save();//save it directly to mongodb
+      res.status(201).json(savedProduct);//send back the new product to confirm it worked
+    } catch(error){//if something goes wrong send back the error
+      res.status(500).json({error:error.message});
+    }
+  })
+});
+
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();//pulls all elements stored under the products database collection

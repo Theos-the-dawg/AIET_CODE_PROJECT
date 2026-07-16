@@ -11,10 +11,7 @@ function isAuthenticated(req, res, next) {
 
 router.get('/', isAuthenticated, async (req, res) => {
   try {
-    const invoices = await Invoice.find({ user: req.session.user.id })
-      .populate('product', 'name price description')
-      .populate('user', 'username email')
-      .sort({ createdAt: -1 });
+    const invoices = await Invoice.findByUser(req.session.user.id);
 
     res.render('invoices', {
       title: 'My Invoices',

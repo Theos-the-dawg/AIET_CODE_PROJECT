@@ -19,10 +19,13 @@
   },
   "homepage": "https://github.com/Theos-the-dawg/AIET_CODE_PROJECT#readme",
   "dependencies": {
+    "body-parser": "^2.2.2",
     "cookie-parser": "^1.4.7",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "http-error": "^0.0.6",
+    "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",
     "path": "^0.12.7"
   },

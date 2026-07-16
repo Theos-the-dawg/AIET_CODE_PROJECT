@@ -1,0 +1,16 @@
+###INDEX ROUTES
+GET http://127.0.0.1:3000/
+
+### UserRoutes
+GET http://127.0.0.1:3000/users/all_users
+
+###
+GET http://127.0.0.1:3000/auth/login/ HTTP/1.1
+###
+POST http://127.0.0.1:3000/auth/login 
+
+Content-Type: 'application/json'
+{
+  "username": "motheo",
+  "password": "123"
+}
